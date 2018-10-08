@@ -2,22 +2,22 @@
 import requests
 import json
 
-with requests.get("https://api.www.svenskaspel.se/draw/stryktipset/draws") as get_api:
+with requests.get('https://api.www.svenskaspel.se/draw/stryktipset/draws') as get_api:
     api_data = get_api.json()
 
 def print_match_teams(match_id):
-    print('{}:'.format(match_id + 1),
+    print(f'{match_id + 1}:',
     api_data['draws'][0]['drawEvents'][match_id]['eventDescription'])
 
 def print_match_data(output_topic, match_id, data_type):
     try:
-        print('{topic}: 1: {one} X: {draw} 2: {two}'.format(
-                topic=output_topic,
-                one=api_data['draws'][0]['drawEvents'][match_id][data_type]['one'],
-                draw=api_data['draws'][0]['drawEvents'][match_id][data_type]['x'],
-                two=api_data['draws'][0]['drawEvents'][match_id][data_type]['two']))
+        one = api_data['draws'][0]['drawEvents'][match_id][data_type]['one']
+        draw = api_data['draws'][0]['drawEvents'][match_id][data_type]['x']
+        two = api_data['draws'][0]['drawEvents'][match_id][data_type]['two']
+
+        print(f'{output_topic}: 1: {one} X: {draw} 2: {two}')
     except:
-        print('{}: not ready yet'.format(output_topic))
+        print(f'{output_topic}: not ready yet')
         pass
 
 for match_id in range(0, 13):
