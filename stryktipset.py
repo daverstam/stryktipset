@@ -2,12 +2,17 @@
 import requests
 import json
 
-with requests.get('https://api.www.svenskaspel.se/draw/stryktipset/draws') as get_api:
+api_url = 'https://api.www.svenskaspel.se/draw/stryktipset/draws'
+
+with requests.get(api_url) as get_api:
     api_data = get_api.json()
 
 def print_match_teams(match_id):
-    print(f'{match_id + 1}:',
-    api_data['draws'][0]['drawEvents'][match_id]['eventDescription'])
+    try:
+        print(f'{match_id + 1}:',
+        api_data['draws'][0]['drawEvents'][match_id]['eventDescription'])
+    except IndexError:
+        print(f'No data available from the api:\n{api_url}')
 
 def print_match_data(output_topic, match_id, data_type):
     try:
@@ -18,7 +23,6 @@ def print_match_data(output_topic, match_id, data_type):
         print(f'{output_topic}: 1: {one} X: {draw} 2: {two}')
     except:
         print(f'{output_topic}: not ready yet')
-        pass
 
 for match_id in range(0, 13):
     """ Stryktipset is always thirteen games """
